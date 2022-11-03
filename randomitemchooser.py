@@ -1,27 +1,12 @@
+import pkgutil
 import tkinter as tk
 import random
-import os
-import sys
 
-# EXE file stuff
-datafile = "icon.ico"
-if not hasattr(sys, "frozen"):
-    datafile = os.path.join(os.path.dirname(__file__), datafile)
-else:
-    datafile = os.path.join(sys.prefix, datafile)
-
-def resource_path(relative_path):
-    try:
-        base_path = sys._MEIPASS
-    except Exception:
-        base_path = os.path.abspath(".")
-
-    return os.path.join(base_path, relative_path)
 
 # Create the window
 window = tk.Tk()
 window.title("Random Item Chooser")
-window.iconbitmap(default=resource_path(datafile))
+window.iconbitmap(default='assets/icon.ico')
 window.geometry("600x420")
 window.resizable(False, False)
 
@@ -33,7 +18,7 @@ listText = "Empty"
 # Create the functions
 def popup_window():
     error_window = tk.Toplevel()
-    error_window.iconbitmap(default=resource_path(datafile))
+    error_window.iconbitmap(default='assets/icon.ico')
     error_window.resizable(False, False)
 
     label = tk.Label(error_window, text="Text field can't be empty.")
