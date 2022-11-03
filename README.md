@@ -1,4 +1,4 @@
-# RandomNumberChooser
+# Random Item Chooser
  A GUI program made in Python that chooses an item at random.
 
 I made a script in Python one night when I and my friend Raven went to play online, and we couldn't figure out what to do.
