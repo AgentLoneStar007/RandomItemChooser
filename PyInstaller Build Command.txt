@@ -1,0 +1,1 @@
+pyinstaller -i .\assets\icon.ico -w '.\randomitemchooser.py' --add-data ".\assets\*;assets" --noconfirm --onefile

@@ -1,12 +1,28 @@
-import pkgutil
 import tkinter as tk
 import random
+import platform
+import os
+import sys
 
+# Get icon for window
+def chooseIcon(providedWindow):
+    bundle_dir = getattr(sys, '_MEIPASS', os.path.abspath(os.path.dirname(__file__)))
+    if platform.system() == 'Windows':
+        try:
+            providedWindow.iconbitmap(os.path.abspath(os.path.join(bundle_dir, 'assets\icon.ico')))
+        except:
+            return
+    else:
+        try:
+            unixIcon = os.path.abspath(os.path.join(bundle_dir, 'assets/icon.xbm'))
+            providedWindow.iconbitmap(f'@{unixIcon}')
+        except:
+            return
 
 # Create the window
 window = tk.Tk()
 window.title("Random Item Chooser")
-window.iconbitmap(default='assets/icon.ico')
+chooseIcon(window)
 window.geometry("600x420")
 window.resizable(False, False)
 
@@ -16,12 +32,12 @@ listText = tk.StringVar()
 listText = "Empty"
 
 # Create the functions
-def popup_window():
+def popup_window(text):
     error_window = tk.Toplevel()
-    error_window.iconbitmap(default='assets/icon.ico')
+    chooseIcon(error_window)
     error_window.resizable(False, False)
 
-    label = tk.Label(error_window, text="Text field can't be empty.")
+    label = tk.Label(error_window, text=text)
     label.pack(fill='x', padx=50, pady=5)
 
     button_close = tk.Button(error_window, text="OK", width=7, command=error_window.destroy)
@@ -30,7 +46,7 @@ def popup_window():
 def addItemstoList(input, listText):
     itemToAdd = input.get()
     if itemToAdd == '':
-        popup_window()
+        popup_window("Input field can't be empty.")
         return
     currentItems.append(itemToAdd)
     currentListValues = listText
@@ -54,6 +70,10 @@ def highlightSelection():
     input_ItemEntry.selection_range(0, tk.END)
 
 def chooseRandom():
+    if currentItems == []:
+        popup_window("You have no items in the list!")
+        return
+
     numberToChoose = len(currentItems)
     chosenOne = random.randint(1, int(numberToChoose))
     label_Output.config(text=currentItems[chosenOne - 1])
@@ -88,7 +108,7 @@ window.columnconfigure(1, weight=1, minsize=75)
 window.rowconfigure(0, weight=1, minsize=50)
 
 # Create keybinds
-window.bind('<Control-a>', lambda event: highlightSelection())
+window.bind('<Control-a>', lambda event: highlightSelection()) # Must do this one manually because of a weird bug
 window.bind('<Return>', lambda event: addItemstoList(input_ItemEntry, label_List.cget("text")))
 
 # Load widgets
